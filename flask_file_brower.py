@@ -90,9 +90,13 @@ def link(file_name):
 
     # 生成文件流
     def generate():
-        f = open(file_path)
-        for line in f:
-            yield line
+        with open(file_path, "rb") as f:
+            while True:
+                b = f.read(1024)
+                if len(b) == 0:
+                    f.close()
+                    break
+                yield b
 
     # 检测mimetype
     mt, _ = mimetypes.guess_type(file_name)
